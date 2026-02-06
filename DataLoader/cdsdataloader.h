@@ -14,6 +14,8 @@ public:
     quint64 getInstCount() override;
     QVector<QString> getDelayNames() override;
     void getInstTicks(Inst* inst, quint64* ticks) override;
+    QString getTypeName(quint8 type) override;
+    int getTypeNum() override;
 
 private:
     struct MetaInfo {
@@ -24,6 +26,7 @@ private:
     QSqlDatabase db;
     QVector<MetaInfo> metas;
     QString primary_key;
+    QVector<QString> type_names;
     quint64 inst_num = 0;
     int primary_key_idx;
     quint64 id = 0;

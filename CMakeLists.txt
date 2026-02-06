@@ -30,17 +30,10 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-
-        ${TS_FILES}
-)
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(CPUDelayViewer
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
+        config.h
         InstViewer/instdefines.h
-
         DataLoader/dataloader.h
+        DataLoader/dataloader.cpp
         DataLoader/cdsdataloader.h DataLoader/cdsdataloader.cpp
         InstViewer/instrow.h
         InstViewer/instrow.cpp
@@ -50,12 +43,21 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         InstViewer/instscene.cpp
         InstViewer/instviewport.h
         InstViewer/instviewport.cpp
-        InstViewer/instviewport.cpp
-        config.h
+        InstViewer/instpanel.h
+        InstViewer/instpanel.cpp
+        InstViewer/insttoolbar.h
+        InstViewer/insttoolbar.cpp
+        InstViewer/instdialog.h
         InstViewer/instdialog.cpp
-        DataLoader/dataloader.cpp
         InstViewer/instdelayheader.h
         InstViewer/instdelayheader.cpp
+        ${TS_FILES}
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(CPUDelayViewer
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CPUDelayViewer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

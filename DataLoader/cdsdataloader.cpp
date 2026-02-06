@@ -45,6 +45,12 @@ void CDSDataLoader::load(const QString& path) {
             metas.append(info);
         }
     }
+    if (root.contains("type_name")) {
+        QJsonArray types = root["type_name"].toArray();
+        for (auto it = types.begin(); it != types.end(); it++) {
+            type_names.append(it->toString());
+        }
+    }
     primary_key = root.value("primary_key").toString();
 
     QByteArray compress_insts = file.readAll();
@@ -241,4 +247,15 @@ void CDSDataLoader::getInstTicks(Inst* inst, quint64* ticks) {
     for (int i = 0; i < inst->delay_num - 1; i++) {
         ticks[i + 1] = inst->delay[i] + ticks[0];
     }
-} 
+}
+
+QString CDSDataLoader::getTypeName(quint8 type) {
+    if (type < type_names.size()) {
+        return type_names[type];
+    }
+    return QString();
+}
+
+int CDSDataLoader::getTypeNum() {
+    return type_names.size();
+}

@@ -10,6 +10,10 @@ class InstScene : public QGraphicsScene {
 public:
     InstScene(DataLoader* loader, QObject* parent = nullptr);
     ~InstScene();
+    void jumpToInst(quint64 id);
+
+signals:
+    void topRowChanged(quint64 inst_id);
 
 protected:
     void wheelEvent(QGraphicsSceneWheelEvent* wheelEvent);
@@ -27,6 +31,8 @@ private:
     int instCount = 0;
     int instHeightMargin = 60;
     int instDelayWidth = 40;
+    int instLabelWidth = 120;
+    int instTypeWidth = 40;
     int columnCount = 0;
     Inst* insts;
     InstWrapper* instWrappers;

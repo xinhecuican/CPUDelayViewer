@@ -33,14 +33,15 @@ void InstLabelItem::setBorderWidth(int width)
 
 void InstLabelItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    QRectF rect = boundingRect();
     if (m_borderWidth > 0) {
-        QRectF rect = boundingRect();
-        
         painter->setRenderHint(QPainter::Antialiasing);
         
         painter->setBrush(m_fillColor);
         painter->setPen(QPen(m_borderColor, m_borderWidth));
         painter->drawRoundedRect(rect.adjusted(m_borderWidth, m_borderWidth, -m_borderWidth, -m_borderWidth), 5, 5);
+    } else {
+        painter->fillRect(rect, m_fillColor);
     }
     
     QGraphicsTextItem::paint(painter, option, widget);

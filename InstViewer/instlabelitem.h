@@ -16,7 +16,7 @@ public:
     
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
-    
+
 private:
     void checkAdjust();
 

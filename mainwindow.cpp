@@ -2,7 +2,7 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
-#include "InstViewer/instviewport.h"
+#include "InstViewer/instpanel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,14 +28,14 @@ MainWindow::MainWindow(QWidget *parent)
         tabWidgets[index] = nullptr;
     });
     connect(instDialog, &InstDialog::dataValid, this, [=, this](const QString& model, const QString& fileName){
-        InstViewPort* viewPort = new InstViewPort(model, fileName, this);
-        int index = tabs->addTab(viewPort, model + QString::number(current_idx++));
-        viewPort->show();
+        InstPanel* panel = new InstPanel(model, fileName, this);
+        int index = tabs->addTab(panel, model + QString::number(current_idx++));
+        panel->show();
         tabs->setCurrentIndex(index);
         if (tabWidgets.size() > index) {
-            tabWidgets[index] = viewPort;
+            tabWidgets[index] = panel;
         } else {
-            tabWidgets.append(viewPort);
+            tabWidgets.append(panel);
         }
     });
 }

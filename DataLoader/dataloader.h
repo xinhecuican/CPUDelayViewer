@@ -31,6 +31,8 @@ public:
         loader_meta[name] = meta;
     }
     virtual void getInstTicks(Inst* inst, quint64* ticks) {}
+    virtual QString getTypeName(quint8 type) { return QString(); }
+    virtual int getTypeNum() { return 0; }
     static QMap<QString, QMetaObject> loader_meta;
 };
 

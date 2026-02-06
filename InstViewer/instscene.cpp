@@ -11,10 +11,11 @@ InstScene::InstScene(DataLoader* loader, QObject* parent) : QGraphicsScene(paren
     delayNum = loader->getDelayNames().size();
     connect(this, &QGraphicsScene::sceneRectChanged, this, [=, this](const QRectF& rect) {
         int capacity = (rect.height() / instHeightMargin - 1);
-        columnCount = std::ceil((double)(rect.width() - 100) / (double)(instDelayWidth));
+        columnCount = std::ceil((double)(rect.width() - instLabelWidth - instTypeWidth) / (double)(instDelayWidth));
         delayHeader->onLabelNumChange(columnCount);
         updateInst(capacity);
     });
+    setBackgroundBrush(Qt::white);
     insts = new Inst[instMaxNum];
     instWrappers = new InstWrapper[instMaxNum];
     instDelays = new quint64[instMaxNum * delayNum];
@@ -31,9 +32,16 @@ InstScene::InstScene(DataLoader* loader, QObject* parent) : QGraphicsScene(paren
         instDelayWidth = qMax(instDelayWidth, metrics.horizontalAdvance(loader->getDelayNames()[i]));
     }
     instDelayWidth += 10;
-    delayHeader = new InstDelayHeader(100, instDelayWidth, instHeightMargin);
+    instLabelWidth = metrics.horizontalAdvance("0000000000000000");
+    int typeNum = loader->getTypeNum();
+    instTypeWidth = metrics.horizontalAdvance(loader->getTypeName(0));
+    for (int i = 1; i < typeNum; i++) {
+        instTypeWidth = qMax(instTypeWidth, metrics.horizontalAdvance(loader->getTypeName(i)));
+    }
+
+    delayHeader = new InstDelayHeader(instLabelWidth, instTypeWidth, instDelayWidth, instHeightMargin);
     addItem(delayHeader);
-    qDebug() << "instDelayWidth" << instDelayWidth;
+    qDebug() << "instLabelWidth" << instLabelWidth << "instTypeWidth" << instTypeWidth << "instDelayWidth" << instDelayWidth;
 }
 
 InstScene::~InstScene() {
@@ -52,6 +60,7 @@ void InstScene::wheelEvent(QGraphicsSceneWheelEvent* wheelEvent) {
         if (current_id + instCount < loader->getInstCount() - 1) {
             currentBeginIdx = (currentBeginIdx + 1) & maxNumMask;
             current_id++;
+            emit topRowChanged(current_id);
             int updateIdx = (currentBeginIdx + instCount) & maxNumMask;
             loader->getInst(current_id + instCount, &insts[updateIdx]);
             updateWrapper(updateIdx);
@@ -63,6 +72,7 @@ void InstScene::wheelEvent(QGraphicsSceneWheelEvent* wheelEvent) {
             currentBeginIdx = maxNumMask;
         }
         current_id--;
+        emit topRowChanged(current_id);
         loader->getInst(current_id, &insts[currentBeginIdx]);
         updateWrapper(currentBeginIdx);
     }
@@ -99,7 +109,9 @@ void InstScene::updateInst(int capacity) {
             }
         }
         for (int i = instCount; i < capacity; i++) {
-            InstRow* row = new InstRow(100, instDelayWidth, instHeightMargin);
+            InstRow* row = new InstRow(instLabelWidth, instTypeWidth, instDelayWidth, instHeightMargin, loader);
+            row->connect(row, &InstRow::hoverDelayLabelEnter, delayHeader, &InstDelayHeader::delayLabelEnter);
+            row->connect(row, &InstRow::hoverDelayLabelLeave, delayHeader, &InstDelayHeader::delayLabelLeave);
             addItem(row);
             row->setPos(0, (i + 1) * instHeightMargin);
             row->setDelayStr(loader->getDelayNames());
@@ -263,4 +275,32 @@ void InstScene::updateDelayTime() {
             return;
         }
     }
+}
+
+void InstScene::jumpToInst(quint64 id) {
+    if (id >= loader->getInstCount()) {
+        return;
+    }
+    current_id = id;
+    emit topRowChanged(current_id);
+    quint32 beginIdx = currentBeginIdx;
+    quint32 endIdx = currentBeginIdx + instCount;
+    if (endIdx > instMaxNum) {
+        quint32 copynum = instMaxNum - currentBeginIdx;
+        quint32 remainNum = instCount - copynum;
+        loader->getMultiInst(current_id, copynum, &insts[currentBeginIdx]);
+        loader->getMultiInst(current_id + copynum, remainNum, &insts[0]);
+        for (int i = beginIdx; i < instMaxNum; i++) {
+            updateWrapper(i);
+        }
+        for (int i = 0; i < remainNum; i++) {
+            updateWrapper(i);
+        }
+    } else {
+        loader->getMultiInst(current_id, instCount, &insts[currentBeginIdx]);
+        for (int i = beginIdx; i < endIdx; i++) {
+            updateWrapper(i);
+        }
+    }
+    updateRows();
 }
