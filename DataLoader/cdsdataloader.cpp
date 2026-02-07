@@ -10,6 +10,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QElapsedTimer>
 
 CDSDataLoader::CDSDataLoader(QObject* parent) : DataLoader(parent) {
     db = QSqlDatabase::addDatabase("QSQLITE", "cds_db");
@@ -32,6 +33,12 @@ void CDSDataLoader::load(const QString& path) {
     QByteArray json_data;
     json_data.resize(meta_size);
     file.read(json_data.data(), meta_size);
+    for (int i = meta_size - 1; i >= 0; i--) {
+        if (json_data[i] != '\0') {
+            json_data.truncate(i+1);
+            break;
+        }
+    }
     QJsonDocument doc = QJsonDocument::fromJson(json_data);
     QJsonObject root = doc.object();
     if (root.contains("type_info")) {
@@ -55,16 +62,41 @@ void CDSDataLoader::load(const QString& path) {
 
     QByteArray compress_insts = file.readAll();
     QByteArray insts;
-    quint64 decompress_size = ZSTD_getFrameContentSize(compress_insts.data(), compress_insts.size());
-    if (decompress_size == ZSTD_CONTENTSIZE_ERROR) {
-        qWarning() << "decompress content size error";
-    } else if (decompress_size == ZSTD_CONTENTSIZE_UNKNOWN) {
-        qWarning() << "decompress content size unknown";
-    }
-    insts.resize(decompress_size);
-    quint64 actual_decompress_size = ZSTD_decompress(insts.data(), insts.size(), compress_insts.data(), compress_insts.size());
-    qDebug() << "insts decompressed" << actual_decompress_size;
-
+    // if (root.contains("origin_size")) {
+    //     quint64 origin_size = root.value("origin_size").toInteger();
+    //     insts.resize(origin_size);
+    //     qDebug() << "origin_size" << origin_size;
+    //     quint64 actual_decompress_size = ZSTD_decompress(insts.data(), origin_size, compress_insts.data(), compress_insts.size());
+    //     if (ZSTD_isError(actual_decompress_size)) {
+    //         qWarning() << "decompress error" << actual_decompress_size << ZSTD_getErrorName(actual_decompress_size);
+    //     }
+    // } else {
+        char* compress_data = compress_insts.data();
+        int decompressed_size = 0;
+        ZSTD_DCtx* zstd_dctx = ZSTD_createDCtx();
+        while (decompressed_size < compress_insts.size()) {
+            quint64 decompress_size = ZSTD_getFrameContentSize(compress_data, compress_insts.size());
+            if (decompress_size == ZSTD_CONTENTSIZE_ERROR) {
+                qWarning() << "decompress content size error";
+            } else if (decompress_size == ZSTD_CONTENTSIZE_UNKNOWN) {
+                qWarning() << "decompress content size unknown";
+            }
+            QByteArray decompress_data;
+            decompress_data.resize(decompress_size);
+            size_t compressed_size = ZSTD_findFrameCompressedSize(compress_data, compress_insts.size());
+            quint64 actual_decompress_size = ZSTD_decompressDCtx(zstd_dctx, decompress_data.data(), decompress_data.size(), compress_data, compressed_size);
+            if (ZSTD_isError(actual_decompress_size)) {
+                qWarning() << "decompress error" << actual_decompress_size << ZSTD_getErrorName(actual_decompress_size);
+                break;
+            }
+            compress_data += compressed_size;
+            decompressed_size += compressed_size;
+            decompress_data.truncate(actual_decompress_size);
+            insts.append(decompress_data);
+        }
+        ZSTD_freeDCtx(zstd_dctx);
+    // }
+    qDebug() << "insts decompressed" << insts.size();
     QSqlQuery query(db);
     QString queryStr = "CREATE TABLE IF NOT EXISTS insts (";
     QString meta_names;
@@ -99,7 +131,7 @@ void CDSDataLoader::load(const QString& path) {
         qCritical() << "create table failed" << query.lastError().text();
     }
 
-    constexpr int BATCH_SIZE = 10000;
+    constexpr int BATCH_SIZE = 50000; // 增加批处理大小
     quint64 current_size = 0;
     quint64 inst_size = insts.size();
 
@@ -109,7 +141,14 @@ void CDSDataLoader::load(const QString& path) {
         record_size += meta.size;
     }
 
+    // 禁用SQLite同步机制以提高写入速度
+    QSqlQuery pragmaQuery(db);
+    pragmaQuery.exec("PRAGMA synchronous = OFF");
+    pragmaQuery.exec("PRAGMA journal_mode = OFF");
+
     // 准备插入语句
+    QElapsedTimer timer;
+    timer.start();
     QString insertQuery = "INSERT INTO insts(" + meta_names + ") VALUES (";
     for (int i = 0; i < metas.size(); i++) {
         insertQuery += "?";
@@ -122,6 +161,12 @@ void CDSDataLoader::load(const QString& path) {
         insertQuery += ",?";
     }
     insertQuery += ")";
+    
+    QVector<QVariantList> batchData;
+    batchData.resize(metas.size()+1);
+    for (int i = 0; i < metas.size()+1; i++) {
+        batchData[i].resize(BATCH_SIZE);
+    }
     while (current_size < inst_size) {
         quint64 remain_size = inst_size - current_size;
         int batch_count = remain_size / record_size;
@@ -133,46 +178,60 @@ void CDSDataLoader::load(const QString& path) {
         QSqlQuery batchQuery(db);
         if (!batchQuery.prepare(insertQuery)) {
             qDebug() << "batch prepare fail";
+            db.rollback();
+            continue;
         }
 
-        // 绑定批量数据
+        auto prepareStartTime = std::chrono::high_resolution_clock::now();
         quint64 offset = current_size;
         for (int j = 0; j < batch_count; j++) {
-
-            for (auto& meta : metas) {
-                switch (meta.size) {
+            for (int i = 0; i < metas.size(); i++) {
+                switch (metas[i].size) {
                 case 1:
-                    batchQuery.addBindValue(*(quint8*)(insts.data() + offset));
+                    batchData[i][j] = *(quint8*)(insts.data() + offset);
                     break;
                 case 2:
-                    batchQuery.addBindValue(*(quint16*)(insts.data() + offset));
+                    batchData[i][j] = *(quint16*)(insts.data() + offset);
                     break;
                 case 4:
-                    batchQuery.addBindValue(*(quint32*)(insts.data() + offset));
+                    batchData[i][j] = *(quint32*)(insts.data() + offset); 
                     break;
                 case 8:
-                    batchQuery.addBindValue(*(quint64*)(insts.data() + offset));
+                    batchData[i][j] = *(quint64*)(insts.data() + offset);
                     break;
                 default:
                     break;
                 }
-                offset += meta.size;
+                offset += metas[i].size;
             }
             if (!primary_key_valid) {
-                batchQuery.addBindValue(id);
+                batchData[metas.size()].append(id);
                 id++;
             }
-            if (!batchQuery.exec()) {
-                qCritical() << "insert failed:" << batchQuery.lastError().text();
+        }
+        if (remain_size < BATCH_SIZE) {
+            for (int i = 0; i < metas.size() + 1; i++) {
+                batchData[i].resize(remain_size);
             }
         }
+        for (int i = 0; i < metas.size(); i++) {
+            batchQuery.addBindValue(batchData[i]);
+        }
+        if (!primary_key_valid) {
+            batchQuery.addBindValue(batchData[metas.size()]);
+        }
 
-        db.commit();
-        current_size += batch_count * record_size;
-        inst_num += batch_count;
+        if (!batchQuery.execBatch()) {
+            qCritical() << "batch insert failed:" << batchQuery.lastError().text();
+            db.rollback();
+        } else {
+            db.commit();
+            current_size += batch_count * record_size;
+            inst_num += batch_count;
+        }
     }
 
-    qDebug() << "inst count" << inst_num;
+    qDebug() << "inst count" << inst_num << "insert time" << timer.elapsed() << "ms";
 }
 
 bool CDSDataLoader::getInst(quint64 id, Inst* inst) {
@@ -196,14 +255,14 @@ bool CDSDataLoader::getInst(quint64 id, Inst* inst) {
     for (int i = 4; i < metas.size(); i++) {
         inst->delay[i - 4] = record.value(i).toUInt();
     }
-    return true;
+    return true; 
 }
 
 int CDSDataLoader::getMultiInst(quint64 id, int num, Inst* inst) {
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM insts WHERE " + primary_key + " >= ? LIMIT ?");
+    query.prepare("SELECT * FROM insts WHERE " + primary_key + " BETWEEN ? AND ?");
     query.addBindValue(id);
-    query.addBindValue(num);
+    query.addBindValue(id + num - 1);
     if (!query.exec()) {
         return 0;
     }
