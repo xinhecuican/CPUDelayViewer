@@ -7,15 +7,8 @@
 class InstViewPort : public QGraphicsView {
     Q_OBJECT
 public:
-    InstViewPort(const QString& model, const QString& path, QWidget* parent = nullptr);
-
-signals:
-    void topRowChanged(quint64 inst_id);
-
-
-
-public slots:
-    void onJumpToInst(quint64 instId);
+    InstViewPort(DataLoader* loader, QWidget* parent = nullptr);
+    InstScene* getScene() const { return scene; }
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

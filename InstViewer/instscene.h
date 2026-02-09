@@ -10,6 +10,8 @@ class InstScene : public QGraphicsScene {
 public:
     InstScene(DataLoader* loader, QObject* parent = nullptr);
     ~InstScene();
+    
+public slots:
     void jumpToInst(quint64 id);
 
 signals:

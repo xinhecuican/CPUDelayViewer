@@ -12,6 +12,7 @@ public:
 private:
     InstViewPort* viewport;
     InstToolBar* toolBar;
+    DataLoader* loader;
 };
 
 #endif

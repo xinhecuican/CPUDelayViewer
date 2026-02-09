@@ -12,8 +12,8 @@
 #include <QJsonArray>
 #include <QElapsedTimer>
 
-CDSDataLoader::CDSDataLoader(QObject* parent) : DataLoader(parent) {
-    db = QSqlDatabase::addDatabase("QSQLITE", "cds_db");
+CDSDataLoader::CDSDataLoader(int index, QObject* parent) : DataLoader(index, parent) {
+    db = QSqlDatabase::addDatabase("QSQLITE", "cds_db" + QString::number(index));
     // db.setDatabaseName("cds.db");
     db.setDatabaseName(":memory:");
     if (!db.open()) {
@@ -134,6 +134,7 @@ void CDSDataLoader::load(const QString& path) {
     constexpr int BATCH_SIZE = 50000; // 增加批处理大小
     quint64 current_size = 0;
     quint64 inst_size = insts.size();
+    quint64 id = 0; // 初始化id变量，避免使用随机值
 
     // 计算每条记录的大小
     int record_size = 0;
@@ -170,6 +171,7 @@ void CDSDataLoader::load(const QString& path) {
     while (current_size < inst_size) {
         quint64 remain_size = inst_size - current_size;
         int batch_count = remain_size / record_size;
+        int origin_batch_count = batch_count;
         if (batch_count > BATCH_SIZE) {
             batch_count = BATCH_SIZE;
         }
@@ -184,8 +186,9 @@ void CDSDataLoader::load(const QString& path) {
 
         auto prepareStartTime = std::chrono::high_resolution_clock::now();
         quint64 offset = current_size;
+        int metas_size = metas.size();
         for (int j = 0; j < batch_count; j++) {
-            for (int i = 0; i < metas.size(); i++) {
+            for (int i = 0; i < metas_size; i++) {
                 switch (metas[i].size) {
                 case 1:
                     batchData[i][j] = *(quint8*)(insts.data() + offset);
@@ -205,25 +208,26 @@ void CDSDataLoader::load(const QString& path) {
                 offset += metas[i].size;
             }
             if (!primary_key_valid) {
-                batchData[metas.size()].append(id);
+                batchData[metas_size][j] = id;
                 id++;
             }
         }
-        if (remain_size < BATCH_SIZE) {
-            for (int i = 0; i < metas.size() + 1; i++) {
-                batchData[i].resize(remain_size);
+        if (batch_count < BATCH_SIZE) {
+            for (int i = 0; i < metas_size + 1; i++) {
+                batchData[i].resize(batch_count);
             }
         }
-        for (int i = 0; i < metas.size(); i++) {
+        for (int i = 0; i < metas_size; i++) {
             batchQuery.addBindValue(batchData[i]);
         }
         if (!primary_key_valid) {
-            batchQuery.addBindValue(batchData[metas.size()]);
+            batchQuery.addBindValue(batchData[metas_size]);
         }
 
         if (!batchQuery.execBatch()) {
-            qCritical() << "batch insert failed:" << batchQuery.lastError().text();
+            qCritical() << "batch insert failed:" << batchQuery.lastError().text() << id << current_size << inst_size;
             db.rollback();
+            break;
         } else {
             db.commit();
             current_size += batch_count * record_size;

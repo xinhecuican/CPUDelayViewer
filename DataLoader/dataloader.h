@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QMap>
 #include <QMetaObject>
+#include <QFileInfo>
+#include <QDateTime>
 
 // 注册宏
 #define REGISTER_LOADER(ClassName) \
@@ -20,7 +22,7 @@
 class DataLoader : public QObject {
     Q_OBJECT
 public:
-    DataLoader(QObject* parent = nullptr) : QObject(parent) {}
+    DataLoader(int index, QObject* parent = nullptr) : QObject(parent) {}
     virtual ~DataLoader() = default;
     virtual bool getInst(quint64 id, Inst* inst) = 0;
     virtual int getMultiInst(quint64 id, int num, Inst* inst) = 0;
@@ -34,6 +36,79 @@ public:
     virtual QString getTypeName(quint8 type) { return QString(); }
     virtual int getTypeNum() { return 0; }
     static QMap<QString, QMetaObject> loader_meta;
+};
+
+class DataLoaderFactory {
+public:
+    static DataLoader* createLoader(const QString& name, const QString& path, QObject* parent = nullptr) {
+        QFileInfo fileInfo(path);
+        QDateTime currentModifyTime;
+        bool needCreateNew = false;
+        
+        // 检查路径是否存在
+        if (!fileInfo.exists()) {
+            return nullptr;
+        } else {
+            currentModifyTime = fileInfo.lastModified();
+            
+            // 检查修改时间是否在所有loaders之后
+            bool isNewer = true;
+            for (const LoaderMeta& meta : loaders) {
+                if (meta.path == path && meta.lastModifytime >= currentModifyTime) {
+                    isNewer = false;
+                    break;
+                }
+            }
+            needCreateNew = isNewer;
+        }
+        
+        if (needCreateNew) {
+            if (!DataLoader::loader_meta.contains(name)) {
+                qCritical() << "DataLoader" << name << "unregistered";
+                return nullptr;
+            }
+            // 构建新的loader
+            DataLoader* newLoader = (DataLoader*)DataLoader::loader_meta[name].newInstance(loaderIdx, parent);
+            if (newLoader) {
+                newLoader->load(path);
+                // 更新loaders列表
+                bool found = false;
+                for (int i = 0; i < loaders.size(); i++) {
+                    if (loaders[i].path == path) {
+                        loaders[i].loader = newLoader;
+                        loaders[i].lastModifytime = currentModifyTime;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    LoaderMeta meta;
+                    meta.path = path;
+                    meta.lastModifytime = currentModifyTime;
+                    meta.loader = newLoader;
+                    loaders.append(meta);
+                }
+            }
+            return newLoader;
+        } else {
+            // 返回已存在的loader
+            for (const LoaderMeta& meta : loaders) {
+                if (meta.path == path) {
+                    return meta.loader;
+                }
+            }
+            return nullptr;
+        }
+    }
+
+private:
+    struct LoaderMeta {
+        QString path;
+        QDateTime lastModifytime;
+        DataLoader* loader;
+    };
+    static QVector<LoaderMeta> loaders;
+    static int loaderIdx;
 };
 
 #endif // DATALOADER_H
