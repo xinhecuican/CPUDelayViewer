@@ -5,9 +5,9 @@
 struct Inst {
     uint64_t id;
     uint64_t tick;
-    uint64_t pc;
     uint64_t paddr;
     uint8_t type;
+    uint8_t result;
     uint8_t delay_num;
     uint16_t* delay;
 

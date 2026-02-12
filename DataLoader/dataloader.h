@@ -8,6 +8,7 @@
 #include <QMetaObject>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QSqlQuery>
 
 // 注册宏
 #define REGISTER_LOADER(ClassName) \
@@ -22,19 +23,27 @@
 class DataLoader : public QObject {
     Q_OBJECT
 public:
+
     DataLoader(int index, QObject* parent = nullptr) : QObject(parent) {}
     virtual ~DataLoader() = default;
     virtual bool getInst(quint64 id, Inst* inst) = 0;
     virtual int getMultiInst(quint64 id, int num, Inst* inst) = 0;
+    // QSqlQuery* manage by caller
+    virtual QSqlQuery* query(const QString& sql) = 0;
     virtual void load(const QString& path){}
     virtual inline quint64 getInstCount() {return 0;}
     virtual QVector<QString> getDelayNames() { return QVector<QString>(); }
+    virtual QVector<QString> getResultNames() { return QVector<QString>(); }
+    virtual QVector<int> getResultLevels() { return QVector<int>(); }
     static void registerLoader(const QString& name, const QMetaObject& meta) {
         loader_meta[name] = meta;
     }
     virtual void getInstTicks(Inst* inst, quint64* ticks) {}
     virtual QString getTypeName(quint8 type) { return QString(); }
     virtual int getTypeNum() { return 0; }
+    virtual QString getPrimaryKey() { return QString(); }
+    virtual QVector<QString> getInstTypes() { return QVector<QString>(); }
+
     static QMap<QString, QMetaObject> loader_meta;
 };
 

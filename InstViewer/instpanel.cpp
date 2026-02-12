@@ -18,3 +18,7 @@ InstPanel::InstPanel(const QString& model, const QString& path, QWidget* parent)
     layout->addWidget(toolBar);
     layout->addWidget(viewport);
 }
+
+DataLoader* InstPanel::getLoader() {
+    return loader;
+}

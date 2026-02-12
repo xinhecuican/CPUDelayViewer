@@ -6,6 +6,7 @@
 #include <QMenuBar>
 #include <QMap>
 #include "InstViewer/instdialog.h"
+#include "Statistic/statrangedialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -17,10 +18,13 @@ public:
 
 private:
     void openFile();
+    void openRangeDialog(StatRangeDialog* dialog, bool checked);
 
 private:
     QMenuBar* _menuBar;
     InstDialog* instDialog;
+    StatRangeDialog* statRangeDialog;
+    StatRangeDialog* resultRangeDialog;
     QTabWidget* tabs;
     QVector<QWidget*> tabWidgets;
     int current_idx = 1;

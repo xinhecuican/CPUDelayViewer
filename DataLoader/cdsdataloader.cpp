@@ -20,6 +20,8 @@ CDSDataLoader::CDSDataLoader(int index, QObject* parent) : DataLoader(index, par
         qDebug() << "Failed to open database:" << db.lastError().text();
         return;
     }
+    instQuery = QSqlQuery(db);
+    multiQuery = QSqlQuery(db);
 }
 
 void CDSDataLoader::load(const QString& path) {
@@ -56,6 +58,14 @@ void CDSDataLoader::load(const QString& path) {
         QJsonArray types = root["type_name"].toArray();
         for (auto it = types.begin(); it != types.end(); it++) {
             type_names.append(it->toString());
+        }
+    }
+    if (root.contains("result_level")) {
+        QJsonArray levels = root["result_level"].toArray();
+        for (auto it = levels.begin(); it != levels.end(); it++) {
+            QJsonObject result_info = it->toObject();
+            result_names.append(result_info.value("n").toString());
+            result_levels.append(result_info.value("l").toInt());
         }
     }
     primary_key = root.value("primary_key").toString();
@@ -235,25 +245,26 @@ void CDSDataLoader::load(const QString& path) {
         }
     }
 
+    instQuery.prepare("SELECT * FROM insts WHERE " + primary_key + " = ?");
+    multiQuery.prepare("SELECT * FROM insts WHERE " + primary_key + " BETWEEN ? AND ?");
+
     qDebug() << "inst count" << inst_num << "insert time" << timer.elapsed() << "ms";
 }
 
 bool CDSDataLoader::getInst(quint64 id, Inst* inst) {
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM insts WHERE " + primary_key + " = ?");
-    query.addBindValue(id);
-    if (!query.exec()) {
+    instQuery.addBindValue(id);
+    if (!instQuery.exec()) {
         return false;
     }
-    if (!query.next()) {
+    if (!instQuery.next()) {
         return false;
     }
-    QSqlRecord record = query.record();
+    QSqlRecord record = instQuery.record();
     inst->id = record.value(primary_key).toULongLong();
     inst->tick = record.value(0).toULongLong();
-    inst->pc = record.value(1).toULongLong();
-    inst->paddr = record.value(2).toULongLong();
-    inst->type = record.value(3).toUInt();
+    inst->paddr = record.value(1).toULongLong();
+    inst->type = record.value(2).toUInt();
+    inst->result = record.value(3).toUInt();
     
     int delayCount = metas.size() - 4;
     for (int i = 4; i < metas.size(); i++) {
@@ -263,26 +274,25 @@ bool CDSDataLoader::getInst(quint64 id, Inst* inst) {
 }
 
 int CDSDataLoader::getMultiInst(quint64 id, int num, Inst* inst) {
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM insts WHERE " + primary_key + " BETWEEN ? AND ?");
-    query.addBindValue(id);
-    query.addBindValue(id + num - 1);
-    if (!query.exec()) {
+    multiQuery.addBindValue(id);
+    multiQuery.addBindValue(id + num - 1);
+    if (!multiQuery.exec()) {
+        qDebug() << "multi query failed" << multiQuery.lastError().text();
         return 0;
     }
     int current = 0;
     int delayCount = metas.size() - 4;
     while (current < num) {
-        if (!query.next()) {
+        if (!multiQuery.next()) {
             return current;
         }
-        QSqlRecord record = query.record();
+        QSqlRecord record = multiQuery.record();
         Inst& currentInst = inst[current];
         currentInst.id = record.value(primary_key).toULongLong();
         currentInst.tick = record.value(0).toULongLong();
-        currentInst.pc = record.value(1).toULongLong();
-        currentInst.paddr = record.value(2).toULongLong();
-        currentInst.type = record.value(3).toUInt();
+        currentInst.paddr = record.value(1).toULongLong();
+        currentInst.type = record.value(2).toUInt();
+        currentInst.result = record.value(3).toUInt();
         
         for (int i = 4; i < metas.size(); i++) {
             currentInst.delay[i - 4] = record.value(i).toUInt();
@@ -321,4 +331,30 @@ QString CDSDataLoader::getTypeName(quint8 type) {
 
 int CDSDataLoader::getTypeNum() {
     return type_names.size();
+}
+
+QVector<QString> CDSDataLoader::getInstTypes() {
+    return type_names;
+}
+
+QVector<QString> CDSDataLoader::getResultNames() {
+    return result_names;
+}
+
+QVector<int> CDSDataLoader::getResultLevels() {
+    return result_levels;
+}
+
+QSqlQuery* CDSDataLoader::query(const QString& sql) {
+    QSqlQuery* query = new QSqlQuery(db);
+    if (!query->exec(sql)) {
+        qDebug() << "query failed" << query->lastError().text();
+        delete query;
+        return nullptr;
+    }
+    return query;
+}
+
+QString CDSDataLoader::getPrimaryKey() {
+    return primary_key;
 }

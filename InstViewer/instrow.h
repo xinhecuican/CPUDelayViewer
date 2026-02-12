@@ -41,5 +41,6 @@ private:
     int height;
     QRectF bound;
     QVector<quint16> shifts;
+    QVector<int> result_levels;
 };
 #endif

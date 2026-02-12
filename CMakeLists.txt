@@ -51,6 +51,12 @@ set(PROJECT_SOURCES
         InstViewer/instdialog.cpp
         InstViewer/instdelayheader.h
         InstViewer/instdelayheader.cpp
+        Statistic/statrangedialog.h
+        Statistic/statrangedialog.cpp
+        Statistic/stattypewidget.h
+        Statistic/stattypewidget.cpp
+        Statistic/resulttypewidget.h
+        Statistic/resulttypewidget.cpp
         ${TS_FILES}
 )
 

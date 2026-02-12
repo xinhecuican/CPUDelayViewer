@@ -16,6 +16,11 @@ public:
     void getInstTicks(Inst* inst, quint64* ticks) override;
     QString getTypeName(quint8 type) override;
     int getTypeNum() override;
+    QVector<QString> getResultNames() override;
+    QVector<int> getResultLevels() override;
+    QSqlQuery* query(const QString& sql) override;
+    QString getPrimaryKey() override;
+    QVector<QString> getInstTypes() override;
 
 private:
     struct MetaInfo {
@@ -27,7 +32,11 @@ private:
     QVector<MetaInfo> metas;
     QString primary_key;
     QVector<QString> type_names;
+    QVector<QString> result_names;
+    QVector<int> result_levels;
     quint64 inst_num = 0;
+    QSqlQuery multiQuery;
+    QSqlQuery instQuery;
     int primary_key_idx;
 };
 

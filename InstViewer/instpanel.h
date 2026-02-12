@@ -8,6 +8,7 @@ class InstPanel : public QWidget {
     Q_OBJECT
 public:
     InstPanel(const QString& model, const QString& path, QWidget* parent = nullptr);
+    DataLoader* getLoader();
 
 private:
     InstViewPort* viewport;

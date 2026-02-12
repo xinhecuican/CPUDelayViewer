@@ -13,11 +13,16 @@ InstRow::InstRow(int labelWidth, int typeWidth, int delayWidth, int height, Data
     // shadow_effect->setOffset(0, 0);
     // shadow_effect->setColor(Qt::black);
     // setGraphicsEffect(shadow_effect);
+    result_levels = loader->getResultLevels();
 }
 
 quint32 defaultColors[12] = {
     0xff7a45, 0xffa940, 0xbae637, 0x4096ff, 0xffec3d, 0xf759ab,
     0x73d13d, 0x36cfc9, 0x40a9ff, 0x9254de, 0x597ef7, 0xffc53d
+};
+
+quint32 resultColor[6] = {
+    0xffffff, 0x00a2ae, 0xffbf00, 0xf56a00,  0xf5317f, 0xd73435
 };
 
 void InstRow::initInst(InstWrapper* inst) {
@@ -55,6 +60,7 @@ void InstRow::setInst(quint16* shift, InstWrapper* inst) {
     }
     inst_label->setPlainText(inst->paddr_str);
     type_label->setPlainText(loader->getTypeName(inst->inst->type));
+    type_label->setFillColor(QColor(resultColor[result_levels[inst->inst->result]]));
     for (int i = 0; i < inst->inst->delay_num; i++) {
         delay_labels[i]->setPlainText(delay_str[i]);
     }
