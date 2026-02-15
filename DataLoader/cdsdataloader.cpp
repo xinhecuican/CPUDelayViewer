@@ -114,6 +114,7 @@ void CDSDataLoader::load(const QString& path) {
     for (int i = 0; i < metas.size(); i++) {
         queryStr += metas[i].name + " ";
         meta_names += metas[i].name;
+        fields_names.append(metas[i].name);
         switch (metas[i].size) {
         case 1: queryStr = queryStr + "TINYINT "; break;
         case 2: queryStr = queryStr + "SMALLINT "; break;
@@ -135,6 +136,7 @@ void CDSDataLoader::load(const QString& path) {
         primary_key = "primary_key";
         primary_key_idx = metas.size();
         meta_names += ",primary_key";
+        fields_names.append("primary_key");
     }
     queryStr += ")";
     if (!query.exec(queryStr)) {
@@ -357,4 +359,12 @@ QSqlQuery* CDSDataLoader::query(const QString& sql) {
 
 QString CDSDataLoader::getPrimaryKey() {
     return primary_key;
+}
+
+QSqlQuery* CDSDataLoader::getQuery() {
+    return new QSqlQuery(db);
+}
+
+QVector<QString> CDSDataLoader::getFieldsNames() {
+    return fields_names;
 }

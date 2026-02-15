@@ -21,6 +21,8 @@ public:
     QSqlQuery* query(const QString& sql) override;
     QString getPrimaryKey() override;
     QVector<QString> getInstTypes() override;
+    QVector<QString> getFieldsNames() override;
+    QSqlQuery* getQuery() override;
 
 private:
     struct MetaInfo {
@@ -38,6 +40,7 @@ private:
     QSqlQuery multiQuery;
     QSqlQuery instQuery;
     int primary_key_idx;
+    QVector<QString> fields_names;
 };
 
 REGISTER_LOADER(CDSDataLoader)

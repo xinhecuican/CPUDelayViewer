@@ -5,6 +5,7 @@
 #include "InstViewer/instpanel.h"
 #include "Statistic/stattypewidget.h"
 #include "Statistic/resulttypewidget.h"
+#include "Statistic/graphpanel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,14 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(instDialog, &InstDialog::dataValid, this, [=, this](const QString& model, const QString& fileName){
         InstPanel* panel = new InstPanel(model, fileName, this);
-        int index = tabs->addTab(panel, model + QString::number(current_idx++));
-        panel->show();
-        tabs->setCurrentIndex(index);
-        if (tabWidgets.size() > index) {
-            tabWidgets[index] = panel;
-        } else {
-            tabWidgets.append(panel);
-        }
+        addTab(panel, model + QString::number(current_idx++));
     });
 
     statRangeDialog = new StatRangeDialog(this);
@@ -46,27 +40,25 @@ MainWindow::MainWindow(QWidget *parent)
     connect(statRangeDialog, &StatRangeDialog::dataValid, this, [=, this](DataLoader* loader, quint64 start, quint64 end){
         StatTypeWidget* widget = new StatTypeWidget(loader, "SELECT type, COUNT(*) FROM insts WHERE " + loader->getPrimaryKey() + 
                 " BETWEEN " + QString::number(start) + " AND " + QString::number(end) + " GROUP BY type", this);
-        int index = tabs->addTab(widget, "指令类型统计");
-        widget->show();
-        tabs->setCurrentIndex(index);
-        if (tabWidgets.size() > index) {
-            tabWidgets[index] = widget;
-        } else {
-            tabWidgets.append(widget);
-        }
+
+        addTab(widget, "指令类型统计");
     });
     resultRangeDialog = new StatRangeDialog(this);
     resultRangeDialog->hide();
     connect(resultRangeDialog, &StatRangeDialog::dataValid, this, [=, this](DataLoader* loader, quint64 start, quint64 end){
         ResultTypeWidget* widget = new ResultTypeWidget(loader, "SELECT result, COUNT(*) FROM insts WHERE " + loader->getPrimaryKey() + 
                 " BETWEEN " + QString::number(start) + " AND " + QString::number(end) + " GROUP BY result", this);
-        int index = tabs->addTab(widget, "结果类型统计");
-        widget->show();
-        tabs->setCurrentIndex(index);
-        if (tabWidgets.size() > index) {
-            tabWidgets[index] = widget;
-        } else {
-            tabWidgets.append(widget);
+        
+        addTab(widget, "结果类型统计");
+    });
+    graphDialog = new GraphDialog(this);
+    graphDialog->hide();
+    connect(graphDialog, &GraphDialog::conditionValid, this, [=, this](QWidget* trigger, DataLoader* loader, const QString& query, quint64 start, quint64 end){
+        if (trigger == this) {
+            GraphPanel* panel = new GraphPanel(graphDialog, loader, this);
+            panel->setQuery(query, start, end);
+            
+            addTab(panel, "指令延迟统计");
         }
     });
 
@@ -81,6 +73,18 @@ MainWindow::MainWindow(QWidget *parent)
     QAction* resultTypeAction = statisticMenu->addAction(tr("结果类型统计"));
     resultTypeAction->connect(resultTypeAction, &QAction::triggered, this, [=, this](bool checked){
         openRangeDialog(resultRangeDialog, checked);
+    });
+    QAction* graphAction = statisticMenu->addAction(tr("指令延迟统计"));
+    graphAction->connect(graphAction, &QAction::triggered, this, [=, this](bool checked){
+        QWidget* currentWidget = tabs->currentWidget();
+        if (currentWidget == nullptr) {
+            return;
+        }
+        InstPanel* panel = dynamic_cast<InstPanel*>(currentWidget);
+        if (panel == nullptr) {
+            return;
+        }
+        graphDialog->showDialog(this, panel->getLoader());
     });
 }
 
@@ -104,4 +108,16 @@ void MainWindow::openRangeDialog(StatRangeDialog* dialog, bool checked)
         return;
     }
     dialog->showDialog(panel->getLoader());
+}
+
+void MainWindow::addTab(QWidget* widget, const QString& name)
+{
+    int index = tabs->addTab(widget, name);
+    widget->show();
+    tabs->setCurrentIndex(index);
+    if (tabWidgets.size() > index) {
+        tabWidgets[index] = widget;
+    } else {
+        tabWidgets.append(widget);
+    }
 }

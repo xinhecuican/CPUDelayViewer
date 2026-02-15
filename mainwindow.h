@@ -7,6 +7,7 @@
 #include <QMap>
 #include "InstViewer/instdialog.h"
 #include "Statistic/statrangedialog.h"
+#include "Statistic/graphdialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -19,11 +20,13 @@ public:
 private:
     void openFile();
     void openRangeDialog(StatRangeDialog* dialog, bool checked);
+    void addTab(QWidget* widget, const QString& name);
 
 private:
     QMenuBar* _menuBar;
     InstDialog* instDialog;
     StatRangeDialog* statRangeDialog;
+    GraphDialog* graphDialog;
     StatRangeDialog* resultRangeDialog;
     QTabWidget* tabs;
     QVector<QWidget*> tabWidgets;

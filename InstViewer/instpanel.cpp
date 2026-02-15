@@ -8,6 +8,10 @@ InstPanel::InstPanel(const QString& model, const QString& path, QWidget* parent)
     layout->setSpacing(0);
 
     loader = DataLoaderFactory::createLoader(model, path, this);
+    if (loader == nullptr) {
+        qDebug() << "Failed to create loader" << model << path;
+        return;
+    }
     viewport = new InstViewPort(loader, this);
     viewport->setFrameShape(QFrame::NoFrame);
     viewport->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

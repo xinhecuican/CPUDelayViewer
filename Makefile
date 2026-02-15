@@ -396,6 +396,30 @@ zstd-frugal_autogen/fast:
 	$(MAKE) $(MAKESILENT) -f _deps/zstd-build/programs/CMakeFiles/zstd-frugal_autogen.dir/build.make _deps/zstd-build/programs/CMakeFiles/zstd-frugal_autogen.dir/build
 .PHONY : zstd-frugal_autogen/fast
 
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.o: CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.o
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.o
+
+# target to build an object file
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.o
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.o
+
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.i: CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.i
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.i
+
+# target to preprocess a source file
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.i
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.i
+
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.s: CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.s
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.s
+
+# target to generate assembly for a file
+CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.s
+.PHONY : CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.cpp.s
+
 CPUDelayViewer_autogen/mocs_compilation.o: CPUDelayViewer_autogen/mocs_compilation.cpp.o
 .PHONY : CPUDelayViewer_autogen/mocs_compilation.o
 
@@ -468,6 +492,30 @@ DataLoader/dataloader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/DataLoader/dataloader.cpp.s
 .PHONY : DataLoader/dataloader.cpp.s
 
+InstViewer/instdelayheader.o: InstViewer/instdelayheader.cpp.o
+.PHONY : InstViewer/instdelayheader.o
+
+# target to build an object file
+InstViewer/instdelayheader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instdelayheader.cpp.o
+.PHONY : InstViewer/instdelayheader.cpp.o
+
+InstViewer/instdelayheader.i: InstViewer/instdelayheader.cpp.i
+.PHONY : InstViewer/instdelayheader.i
+
+# target to preprocess a source file
+InstViewer/instdelayheader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instdelayheader.cpp.i
+.PHONY : InstViewer/instdelayheader.cpp.i
+
+InstViewer/instdelayheader.s: InstViewer/instdelayheader.cpp.s
+.PHONY : InstViewer/instdelayheader.s
+
+# target to generate assembly for a file
+InstViewer/instdelayheader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instdelayheader.cpp.s
+.PHONY : InstViewer/instdelayheader.cpp.s
+
 InstViewer/instdialog.o: InstViewer/instdialog.cpp.o
 .PHONY : InstViewer/instdialog.o
 
@@ -515,6 +563,30 @@ InstViewer/instlabelitem.s: InstViewer/instlabelitem.cpp.s
 InstViewer/instlabelitem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instlabelitem.cpp.s
 .PHONY : InstViewer/instlabelitem.cpp.s
+
+InstViewer/instpanel.o: InstViewer/instpanel.cpp.o
+.PHONY : InstViewer/instpanel.o
+
+# target to build an object file
+InstViewer/instpanel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instpanel.cpp.o
+.PHONY : InstViewer/instpanel.cpp.o
+
+InstViewer/instpanel.i: InstViewer/instpanel.cpp.i
+.PHONY : InstViewer/instpanel.i
+
+# target to preprocess a source file
+InstViewer/instpanel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instpanel.cpp.i
+.PHONY : InstViewer/instpanel.cpp.i
+
+InstViewer/instpanel.s: InstViewer/instpanel.cpp.s
+.PHONY : InstViewer/instpanel.s
+
+# target to generate assembly for a file
+InstViewer/instpanel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instpanel.cpp.s
+.PHONY : InstViewer/instpanel.cpp.s
 
 InstViewer/instrow.o: InstViewer/instrow.cpp.o
 .PHONY : InstViewer/instrow.o
@@ -564,6 +636,30 @@ InstViewer/instscene.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instscene.cpp.s
 .PHONY : InstViewer/instscene.cpp.s
 
+InstViewer/insttoolbar.o: InstViewer/insttoolbar.cpp.o
+.PHONY : InstViewer/insttoolbar.o
+
+# target to build an object file
+InstViewer/insttoolbar.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/insttoolbar.cpp.o
+.PHONY : InstViewer/insttoolbar.cpp.o
+
+InstViewer/insttoolbar.i: InstViewer/insttoolbar.cpp.i
+.PHONY : InstViewer/insttoolbar.i
+
+# target to preprocess a source file
+InstViewer/insttoolbar.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/insttoolbar.cpp.i
+.PHONY : InstViewer/insttoolbar.cpp.i
+
+InstViewer/insttoolbar.s: InstViewer/insttoolbar.cpp.s
+.PHONY : InstViewer/insttoolbar.s
+
+# target to generate assembly for a file
+InstViewer/insttoolbar.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/insttoolbar.cpp.s
+.PHONY : InstViewer/insttoolbar.cpp.s
+
 InstViewer/instviewport.o: InstViewer/instviewport.cpp.o
 .PHONY : InstViewer/instviewport.o
 
@@ -587,6 +683,246 @@ InstViewer/instviewport.s: InstViewer/instviewport.cpp.s
 InstViewer/instviewport.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/InstViewer/instviewport.cpp.s
 .PHONY : InstViewer/instviewport.cpp.s
+
+Statistic/coordinateitem.o: Statistic/coordinateitem.cpp.o
+.PHONY : Statistic/coordinateitem.o
+
+# target to build an object file
+Statistic/coordinateitem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/coordinateitem.cpp.o
+.PHONY : Statistic/coordinateitem.cpp.o
+
+Statistic/coordinateitem.i: Statistic/coordinateitem.cpp.i
+.PHONY : Statistic/coordinateitem.i
+
+# target to preprocess a source file
+Statistic/coordinateitem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/coordinateitem.cpp.i
+.PHONY : Statistic/coordinateitem.cpp.i
+
+Statistic/coordinateitem.s: Statistic/coordinateitem.cpp.s
+.PHONY : Statistic/coordinateitem.s
+
+# target to generate assembly for a file
+Statistic/coordinateitem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/coordinateitem.cpp.s
+.PHONY : Statistic/coordinateitem.cpp.s
+
+Statistic/graphdialog.o: Statistic/graphdialog.cpp.o
+.PHONY : Statistic/graphdialog.o
+
+# target to build an object file
+Statistic/graphdialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphdialog.cpp.o
+.PHONY : Statistic/graphdialog.cpp.o
+
+Statistic/graphdialog.i: Statistic/graphdialog.cpp.i
+.PHONY : Statistic/graphdialog.i
+
+# target to preprocess a source file
+Statistic/graphdialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphdialog.cpp.i
+.PHONY : Statistic/graphdialog.cpp.i
+
+Statistic/graphdialog.s: Statistic/graphdialog.cpp.s
+.PHONY : Statistic/graphdialog.s
+
+# target to generate assembly for a file
+Statistic/graphdialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphdialog.cpp.s
+.PHONY : Statistic/graphdialog.cpp.s
+
+Statistic/graphitem.o: Statistic/graphitem.cpp.o
+.PHONY : Statistic/graphitem.o
+
+# target to build an object file
+Statistic/graphitem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphitem.cpp.o
+.PHONY : Statistic/graphitem.cpp.o
+
+Statistic/graphitem.i: Statistic/graphitem.cpp.i
+.PHONY : Statistic/graphitem.i
+
+# target to preprocess a source file
+Statistic/graphitem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphitem.cpp.i
+.PHONY : Statistic/graphitem.cpp.i
+
+Statistic/graphitem.s: Statistic/graphitem.cpp.s
+.PHONY : Statistic/graphitem.s
+
+# target to generate assembly for a file
+Statistic/graphitem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphitem.cpp.s
+.PHONY : Statistic/graphitem.cpp.s
+
+Statistic/graphpanel.o: Statistic/graphpanel.cpp.o
+.PHONY : Statistic/graphpanel.o
+
+# target to build an object file
+Statistic/graphpanel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphpanel.cpp.o
+.PHONY : Statistic/graphpanel.cpp.o
+
+Statistic/graphpanel.i: Statistic/graphpanel.cpp.i
+.PHONY : Statistic/graphpanel.i
+
+# target to preprocess a source file
+Statistic/graphpanel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphpanel.cpp.i
+.PHONY : Statistic/graphpanel.cpp.i
+
+Statistic/graphpanel.s: Statistic/graphpanel.cpp.s
+.PHONY : Statistic/graphpanel.s
+
+# target to generate assembly for a file
+Statistic/graphpanel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphpanel.cpp.s
+.PHONY : Statistic/graphpanel.cpp.s
+
+Statistic/graphscene.o: Statistic/graphscene.cpp.o
+.PHONY : Statistic/graphscene.o
+
+# target to build an object file
+Statistic/graphscene.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphscene.cpp.o
+.PHONY : Statistic/graphscene.cpp.o
+
+Statistic/graphscene.i: Statistic/graphscene.cpp.i
+.PHONY : Statistic/graphscene.i
+
+# target to preprocess a source file
+Statistic/graphscene.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphscene.cpp.i
+.PHONY : Statistic/graphscene.cpp.i
+
+Statistic/graphscene.s: Statistic/graphscene.cpp.s
+.PHONY : Statistic/graphscene.s
+
+# target to generate assembly for a file
+Statistic/graphscene.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphscene.cpp.s
+.PHONY : Statistic/graphscene.cpp.s
+
+Statistic/graphtoolbar.o: Statistic/graphtoolbar.cpp.o
+.PHONY : Statistic/graphtoolbar.o
+
+# target to build an object file
+Statistic/graphtoolbar.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphtoolbar.cpp.o
+.PHONY : Statistic/graphtoolbar.cpp.o
+
+Statistic/graphtoolbar.i: Statistic/graphtoolbar.cpp.i
+.PHONY : Statistic/graphtoolbar.i
+
+# target to preprocess a source file
+Statistic/graphtoolbar.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphtoolbar.cpp.i
+.PHONY : Statistic/graphtoolbar.cpp.i
+
+Statistic/graphtoolbar.s: Statistic/graphtoolbar.cpp.s
+.PHONY : Statistic/graphtoolbar.s
+
+# target to generate assembly for a file
+Statistic/graphtoolbar.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphtoolbar.cpp.s
+.PHONY : Statistic/graphtoolbar.cpp.s
+
+Statistic/graphviewport.o: Statistic/graphviewport.cpp.o
+.PHONY : Statistic/graphviewport.o
+
+# target to build an object file
+Statistic/graphviewport.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphviewport.cpp.o
+.PHONY : Statistic/graphviewport.cpp.o
+
+Statistic/graphviewport.i: Statistic/graphviewport.cpp.i
+.PHONY : Statistic/graphviewport.i
+
+# target to preprocess a source file
+Statistic/graphviewport.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphviewport.cpp.i
+.PHONY : Statistic/graphviewport.cpp.i
+
+Statistic/graphviewport.s: Statistic/graphviewport.cpp.s
+.PHONY : Statistic/graphviewport.s
+
+# target to generate assembly for a file
+Statistic/graphviewport.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/graphviewport.cpp.s
+.PHONY : Statistic/graphviewport.cpp.s
+
+Statistic/resulttypewidget.o: Statistic/resulttypewidget.cpp.o
+.PHONY : Statistic/resulttypewidget.o
+
+# target to build an object file
+Statistic/resulttypewidget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/resulttypewidget.cpp.o
+.PHONY : Statistic/resulttypewidget.cpp.o
+
+Statistic/resulttypewidget.i: Statistic/resulttypewidget.cpp.i
+.PHONY : Statistic/resulttypewidget.i
+
+# target to preprocess a source file
+Statistic/resulttypewidget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/resulttypewidget.cpp.i
+.PHONY : Statistic/resulttypewidget.cpp.i
+
+Statistic/resulttypewidget.s: Statistic/resulttypewidget.cpp.s
+.PHONY : Statistic/resulttypewidget.s
+
+# target to generate assembly for a file
+Statistic/resulttypewidget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/resulttypewidget.cpp.s
+.PHONY : Statistic/resulttypewidget.cpp.s
+
+Statistic/statrangedialog.o: Statistic/statrangedialog.cpp.o
+.PHONY : Statistic/statrangedialog.o
+
+# target to build an object file
+Statistic/statrangedialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/statrangedialog.cpp.o
+.PHONY : Statistic/statrangedialog.cpp.o
+
+Statistic/statrangedialog.i: Statistic/statrangedialog.cpp.i
+.PHONY : Statistic/statrangedialog.i
+
+# target to preprocess a source file
+Statistic/statrangedialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/statrangedialog.cpp.i
+.PHONY : Statistic/statrangedialog.cpp.i
+
+Statistic/statrangedialog.s: Statistic/statrangedialog.cpp.s
+.PHONY : Statistic/statrangedialog.s
+
+# target to generate assembly for a file
+Statistic/statrangedialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/statrangedialog.cpp.s
+.PHONY : Statistic/statrangedialog.cpp.s
+
+Statistic/stattypewidget.o: Statistic/stattypewidget.cpp.o
+.PHONY : Statistic/stattypewidget.o
+
+# target to build an object file
+Statistic/stattypewidget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/stattypewidget.cpp.o
+.PHONY : Statistic/stattypewidget.cpp.o
+
+Statistic/stattypewidget.i: Statistic/stattypewidget.cpp.i
+.PHONY : Statistic/stattypewidget.i
+
+# target to preprocess a source file
+Statistic/stattypewidget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/stattypewidget.cpp.i
+.PHONY : Statistic/stattypewidget.cpp.i
+
+Statistic/stattypewidget.s: Statistic/stattypewidget.cpp.s
+.PHONY : Statistic/stattypewidget.s
+
+# target to generate assembly for a file
+Statistic/stattypewidget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPUDelayViewer.dir/build.make CMakeFiles/CPUDelayViewer.dir/Statistic/stattypewidget.cpp.s
+.PHONY : Statistic/stattypewidget.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -666,6 +1002,9 @@ help:
 	@echo "... libzstd_static"
 	@echo "... zstd"
 	@echo "... zstd-frugal"
+	@echo "... CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.o"
+	@echo "... CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.i"
+	@echo "... CPUDelayViewer_autogen/S5YYZ2ZCNV/qrc_resources.s"
 	@echo "... CPUDelayViewer_autogen/mocs_compilation.o"
 	@echo "... CPUDelayViewer_autogen/mocs_compilation.i"
 	@echo "... CPUDelayViewer_autogen/mocs_compilation.s"
@@ -675,21 +1014,60 @@ help:
 	@echo "... DataLoader/dataloader.o"
 	@echo "... DataLoader/dataloader.i"
 	@echo "... DataLoader/dataloader.s"
+	@echo "... InstViewer/instdelayheader.o"
+	@echo "... InstViewer/instdelayheader.i"
+	@echo "... InstViewer/instdelayheader.s"
 	@echo "... InstViewer/instdialog.o"
 	@echo "... InstViewer/instdialog.i"
 	@echo "... InstViewer/instdialog.s"
 	@echo "... InstViewer/instlabelitem.o"
 	@echo "... InstViewer/instlabelitem.i"
 	@echo "... InstViewer/instlabelitem.s"
+	@echo "... InstViewer/instpanel.o"
+	@echo "... InstViewer/instpanel.i"
+	@echo "... InstViewer/instpanel.s"
 	@echo "... InstViewer/instrow.o"
 	@echo "... InstViewer/instrow.i"
 	@echo "... InstViewer/instrow.s"
 	@echo "... InstViewer/instscene.o"
 	@echo "... InstViewer/instscene.i"
 	@echo "... InstViewer/instscene.s"
+	@echo "... InstViewer/insttoolbar.o"
+	@echo "... InstViewer/insttoolbar.i"
+	@echo "... InstViewer/insttoolbar.s"
 	@echo "... InstViewer/instviewport.o"
 	@echo "... InstViewer/instviewport.i"
 	@echo "... InstViewer/instviewport.s"
+	@echo "... Statistic/coordinateitem.o"
+	@echo "... Statistic/coordinateitem.i"
+	@echo "... Statistic/coordinateitem.s"
+	@echo "... Statistic/graphdialog.o"
+	@echo "... Statistic/graphdialog.i"
+	@echo "... Statistic/graphdialog.s"
+	@echo "... Statistic/graphitem.o"
+	@echo "... Statistic/graphitem.i"
+	@echo "... Statistic/graphitem.s"
+	@echo "... Statistic/graphpanel.o"
+	@echo "... Statistic/graphpanel.i"
+	@echo "... Statistic/graphpanel.s"
+	@echo "... Statistic/graphscene.o"
+	@echo "... Statistic/graphscene.i"
+	@echo "... Statistic/graphscene.s"
+	@echo "... Statistic/graphtoolbar.o"
+	@echo "... Statistic/graphtoolbar.i"
+	@echo "... Statistic/graphtoolbar.s"
+	@echo "... Statistic/graphviewport.o"
+	@echo "... Statistic/graphviewport.i"
+	@echo "... Statistic/graphviewport.s"
+	@echo "... Statistic/resulttypewidget.o"
+	@echo "... Statistic/resulttypewidget.i"
+	@echo "... Statistic/resulttypewidget.s"
+	@echo "... Statistic/statrangedialog.o"
+	@echo "... Statistic/statrangedialog.i"
+	@echo "... Statistic/statrangedialog.s"
+	@echo "... Statistic/stattypewidget.o"
+	@echo "... Statistic/stattypewidget.i"
+	@echo "... Statistic/stattypewidget.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

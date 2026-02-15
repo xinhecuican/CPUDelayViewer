@@ -30,11 +30,19 @@ public:
     virtual int getMultiInst(quint64 id, int num, Inst* inst) = 0;
     // QSqlQuery* manage by caller
     virtual QSqlQuery* query(const QString& sql) = 0;
+    virtual QSqlQuery* getQuery() { return nullptr; }
     virtual void load(const QString& path){}
     virtual inline quint64 getInstCount() {return 0;}
+    // 获得每个周期的名称，例如if id等
     virtual QVector<QString> getDelayNames() { return QVector<QString>(); }
+    // 获得执行结果的名称，如NORMAL, PRED_FAIL等
     virtual QVector<QString> getResultNames() { return QVector<QString>(); }
+    // 执行结果的严重等级，最高为5级，显示红色
     virtual QVector<int> getResultLevels() { return QVector<int>(); }
+    // 获得指令类型名称，如INT, COND等
+    virtual QVector<QString> getInstTypes() { return QVector<QString>(); }
+    // 获得所有字段的名称，如primary_key, result, type等
+    virtual QVector<QString> getFieldsNames() { return QVector<QString>(); }
     static void registerLoader(const QString& name, const QMetaObject& meta) {
         loader_meta[name] = meta;
     }
@@ -42,7 +50,6 @@ public:
     virtual QString getTypeName(quint8 type) { return QString(); }
     virtual int getTypeNum() { return 0; }
     virtual QString getPrimaryKey() { return QString(); }
-    virtual QVector<QString> getInstTypes() { return QVector<QString>(); }
 
     static QMap<QString, QMetaObject> loader_meta;
 };

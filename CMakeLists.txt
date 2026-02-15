@@ -57,6 +57,20 @@ set(PROJECT_SOURCES
         Statistic/stattypewidget.cpp
         Statistic/resulttypewidget.h
         Statistic/resulttypewidget.cpp
+        Statistic/graphdialog.h
+        Statistic/graphdialog.cpp
+        Statistic/graphpanel.h
+        Statistic/graphpanel.cpp
+        Statistic/graphscene.h
+        Statistic/graphscene.cpp
+        Statistic/graphviewport.h
+        Statistic/graphviewport.cpp
+        Statistic/graphitem.h
+        Statistic/graphitem.cpp
+        Statistic/graphtoolbar.h
+        Statistic/graphtoolbar.cpp
+        Statistic/coordinateitem.h
+        Statistic/coordinateitem.cpp
         ${TS_FILES}
 )
 
@@ -64,6 +78,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(CPUDelayViewer
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        Resources/resources.qrc
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CPUDelayViewer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
